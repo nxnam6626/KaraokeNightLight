@@ -251,15 +251,6 @@ public class panel_ThongKe extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -277,9 +268,6 @@ public class panel_ThongKe extends javax.swing.JPanel {
     private javax.swing.JLabel lbl_SoPhongDung;
     private javax.swing.JPanel pnl_DoanhThu;
     private javax.swing.JPanel pnl_DonHang;
-    private javax.swing.JPanel pnl_DonHang1;
-    private javax.swing.JPanel pnl_DonHang2;
-    private javax.swing.JPanel pnl_DonHang3;
     private javax.swing.JPanel pnl_PhongCho;
     private javax.swing.JPanel pnl_PhongDung;
     private javax.swing.JPanel pnl_duoi;
