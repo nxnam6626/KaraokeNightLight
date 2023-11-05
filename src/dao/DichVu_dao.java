@@ -4,14 +4,13 @@
  */
 package dao;
 
+import connectDB.ConnectDB;
 import interface_dao.DichVu_Interface;
 
 import java.util.ArrayList;
 /*import ConnectDB.ConnectDB;*/
 import java.sql.*;
 import models.DichVu;
-import utilities.connect.ConnectDB;
-
 
 
 
@@ -21,12 +20,13 @@ import utilities.connect.ConnectDB;
  */
 public class DichVu_dao implements DichVu_Interface{
 	
+    Connection con = ConnectDB.getConnection();
     @Override
     public ArrayList<DichVu> getAllDichVu() {
         ArrayList<DichVu> list = new ArrayList<>();
         String query = "Select * from DichVu";
         try {
-            Statement st = ConnectDB.conn.createStatement();
+            Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(query);
 
             while (rs.next()) {
@@ -51,7 +51,7 @@ public class DichVu_dao implements DichVu_Interface{
     	ArrayList<DichVu> list = new ArrayList<>();
         String query = "Select * from DichVu where maDichVu = ?";
         try {
-            PreparedStatement st = ConnectDB.conn.prepareStatement(query);
+            PreparedStatement st = con.prepareStatement(query);
             st.setString(1, maDichVu);
             ResultSet rs = st.executeQuery();
             
@@ -77,7 +77,7 @@ public class DichVu_dao implements DichVu_Interface{
     	int n=0;
     	String query = "delete from DichVu where maDichVu = ?";
     	try {
-			PreparedStatement st = ConnectDB.conn.prepareStatement(query);
+			PreparedStatement st = con.prepareStatement(query);
 			st.setString(1, maDichVu);
 			n= st.executeUpdate();
 		} catch (Exception e) {
@@ -91,7 +91,7 @@ public class DichVu_dao implements DichVu_Interface{
     	int n=0;
     	String query = "insert into DichVu "+"values (?,?,?,?,?,?,?)";//Thieu ? cho DonViTinh tai sql chua co
     	try {
-			PreparedStatement st = ConnectDB.conn.prepareStatement(query);
+			PreparedStatement st = con.prepareStatement(query);
 			st.setString(1, dichVu.getId());
 			st.setString(2, dichVu.getTenDichVu());
 			st.setInt(3, dichVu.getSoLuong());
@@ -111,7 +111,7 @@ public class DichVu_dao implements DichVu_Interface{
     	int n=0;
     	String query = "update DichVu "+"set tenDichVu = ? , soLuong = ?, giaNhap = ?"+"where maDichVu = ?";
     	try {
-			PreparedStatement st = ConnectDB.conn.prepareStatement(query);
+			PreparedStatement st = con.prepareStatement(query);
 			st.setString(1, dichvu.getTenDichVu());
 			st.setInt(2, dichvu.getSoLuong());
 			st.setDouble(3, dichvu.getGiaBan());

@@ -23,6 +23,8 @@ public class Phong_dao {
     public  ArrayList<Phong> LayDanhSachPhongTheoTieuChi(String maPhong, int trangThai, int loaiPhong, int soNguoi){
   
 	ArrayList<Phong> dsP = new ArrayList<Phong>();
+	ConnectDB.getInstance();
+	Connection con = ConnectDB.getConnection();
 	PreparedStatement stmt = null;
 			
 	try {
@@ -41,7 +43,7 @@ public class Phong_dao {
                   sql += " AND nhomPhong = ?";
             }
 
-	    stmt = ConnectDB.conn.prepareStatement(sql);
+	    stmt = con.prepareStatement(sql);
 
 
             int parameterIndex = 1;
@@ -95,9 +97,13 @@ public class Phong_dao {
     //Lay toan bo danh sach phong
     public ArrayList<Phong> getAllPhong() {
 		ArrayList<Phong> dsP = new ArrayList<Phong>();
+		ConnectDB.getInstance();
+		Connection con= ConnectDB.getConnection();	
+		
+		
 		try {
 			String sql= "Select * from PHONG";
-			PreparedStatement psm = ConnectDB.conn.prepareStatement(sql);
+			PreparedStatement psm = con.prepareStatement(sql);
 			ResultSet rs = psm.executeQuery();
 
 		while (rs.next()) {
@@ -132,4 +138,57 @@ public class Phong_dao {
 	return 0;
 
 	}
+    
+    public boolean capNhatTrangThaiPhong(String mp, int ttp) {
+	ConnectDB.getInstance();
+	Connection con= ConnectDB.getConnection();	
+	PreparedStatement stmt = null;
+			
+	int n=0;
+			
+			
+	try {
+	     stmt= con.prepareStatement("update PHONG SET trangThaiPhong=? WHERE maPhong=?");
+	     stmt.setInt(1,ttp );
+	     stmt.setString(2,mp);
+	     
+	     n= stmt.executeUpdate();
+	    } catch (SQLException e) {
+            // TODO Auto-generated catch block
+
+	    }
+	    finally {
+		try {
+	            stmt.close();
+		} catch (SQLException e2) {
+                    // TODO: handle exception
+                    
+		}
+	   }
+            return n>0;
+    }
+//    public boolean capNhatTrangThaiPhong(String maPhong, int trangThaiPhong) {
+//		// TODO Auto-generated method stub
+//		String sql = "UPDATE Phong set maTTP = :maTTP WHERE maPhong = :maPhong ";
+//		Session session = sessionFactory.openSession();
+//		Transaction tr = session.getTransaction();
+//		try {
+//			tr.begin();
+//			@SuppressWarnings("rawtypes")
+//			Query query = session.createQuery(sql);
+//			query.setParameter("maTTP", maTTP);
+//			query.setParameter("maPhong", maPhong);
+//			int result = query.executeUpdate();
+//			if (result != 0) {
+//				return true;
+//			}
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//			tr.rollback();
+//
+//		} finally {
+//			session.close();
+//		}
+//		return false;
+//	}
 }

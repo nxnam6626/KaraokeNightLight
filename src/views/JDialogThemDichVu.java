@@ -8,6 +8,7 @@ import controller.DichVu_bus;
 import java.io.File;
 import javax.swing.JFileChooser;
 import models.DichVu;
+import models.Phong;
 
 public class JDialogThemDichVu extends javax.swing.JDialog {
 

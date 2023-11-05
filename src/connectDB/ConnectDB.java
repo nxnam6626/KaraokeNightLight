@@ -1,33 +1,42 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package connectDB;
 
-import utilities.connect.*;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
-
-/**
- *
- * @author Nguyễn Xuân Nam
- */
 public class ConnectDB {
-    public static Connection conn;
-    
-    public static void connect() throws SQLException {
-        String url = "jdbc:sqlserver://localhost:1433;databasename=KaraokeNightLight;encrypt=false";
-        String user = "sa";
-        String password = "sapassword";
-        conn = DriverManager.getConnection(url, user, password);
-    }
-    
-    public static void disconnect() {
-        try {
-            conn.close();
-        } catch (SQLException e) {
-            
-        }
-    }
+	private static Connection con = null;
+	private static ConnectDB instance = new ConnectDB();
+	
+	public static ConnectDB getInstance()
+	{
+		return instance;
+	}
+	
+	public void connect() throws SQLException
+	{
+		String url = "jdbc:sqlserver://localhost:1433;databasename=KaraokeNightLight";
+		String user = "sa";
+		String pass = "123456789";
+		
+		con = DriverManager.getConnection(url, user, pass);
+	}
+	
+	public void disconnect()
+	{
+		if(con != null)
+		{
+			try {
+				con.close();
+			} catch (SQLException e) {
+                            // TODO: handle exception
+                            
+			}
+		}
+	}
+	
+	public static Connection getConnection()
+	{
+		return con;
+	}
 }
-

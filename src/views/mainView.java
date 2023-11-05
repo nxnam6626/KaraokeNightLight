@@ -5,7 +5,7 @@
 package views;
 
 
-
+import connectDB.ConnectDB;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.sql.SQLException;
@@ -22,8 +22,12 @@ public final class mainView extends javax.swing.JFrame {
 
    
     public mainView() {
-
-
+         try {
+		ConnectDB.getInstance().connect();
+	} catch (SQLException e) {
+            // TODO: handle exception
+            
+	}
         initComponents();
         card = (CardLayout) this.pnl_Main.getLayout();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -97,10 +101,8 @@ public final class mainView extends javax.swing.JFrame {
         pnMenu.add(lbl_ManHinhChinh);
 
         lbl_PhongHat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lbl_PhongHat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/utilities/icon/phongkaraoke.png"))); // NOI18N
+        lbl_PhongHat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/utilities/icon/karaoke.png"))); // NOI18N
         lbl_PhongHat.setText("Phòng hát");
-        lbl_PhongHat.setMaximumSize(new java.awt.Dimension(200, 64));
-        lbl_PhongHat.setPreferredSize(new java.awt.Dimension(200, 64));
         lbl_PhongHat.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lbl_PhongHatMouseClicked(evt);
@@ -240,8 +242,8 @@ public final class mainView extends javax.swing.JFrame {
     }//GEN-LAST:event_lbl_KhachHangMouseClicked
 
     private void lbl_DichVuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_DichVuMouseClicked
-//        pnl_Main.add(new panel_QuanLyDichVu(), "quanLiDichVu");
-//        card.show(this.pnl_Main, "quanLiDichVu");
+        pnl_Main.add(new panel_QuanLyDichVu(), "quanLiDichVu");
+        card.show(this.pnl_Main, "quanLiDichVu");
     }//GEN-LAST:event_lbl_DichVuMouseClicked
 
     private void lbl_NhanVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_NhanVienMouseClicked

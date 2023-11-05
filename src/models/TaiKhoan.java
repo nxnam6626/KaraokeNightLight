@@ -4,42 +4,26 @@
  */
 package models;
 
-import java.util.Objects;
-
-/**
- *
- * @author nxnam
- */
 public class TaiKhoan {
-      private String maTaiKhoan;
-      private String matKhau;
-      private boolean loaiTaiKhoan;
+    private int maTaiKhoan;
+    private String tenDangNhap;
+    private String matKhau;
+    private boolean tinhTrang;
 
-    public TaiKhoan() {
-    }
-
-      
-      
-      
-    public TaiKhoan(String maTaiKhoan) {
-        this.maTaiKhoan = maTaiKhoan;
-    }
-
-    public TaiKhoan(String maTaiKhoan, String matKhau, boolean loaiTaiKhoan) {
-        this.maTaiKhoan = maTaiKhoan;
-        this.matKhau = matKhau;
-        this.loaiTaiKhoan = loaiTaiKhoan;
-    }
-
-     
-     
-     
-    public String getMaTaiKhoan() {
+    public int getMaTaiKhoan() {
         return maTaiKhoan;
     }
 
-    public void setMaTaiKhoan(String maTaiKhoan) {
+    public void setMaTaiKhoan(int maTaiKhoan) {
         this.maTaiKhoan = maTaiKhoan;
+    }
+
+    public String getTenDangNhap() {
+        return tenDangNhap;
+    }
+
+    public void setTenDangNhap(String tenDangNhap) {
+        this.tenDangNhap = tenDangNhap;
     }
 
     public String getMatKhau() {
@@ -50,40 +34,17 @@ public class TaiKhoan {
         this.matKhau = matKhau;
     }
 
-    public boolean isLoaiTaiKhoan() {
-        return loaiTaiKhoan;
+    public boolean isTinhTrang() {
+        return tinhTrang;
     }
 
-    public void setLoaiTaiKhoan(boolean loaiTaiKhoan) {
-        this.loaiTaiKhoan = loaiTaiKhoan;
+    public void setTinhTrang(boolean tinhTrang) {
+        this.tinhTrang = tinhTrang;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 19 * hash + Objects.hashCode(this.maTaiKhoan);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final TaiKhoan other = (TaiKhoan) obj;
-        return Objects.equals(this.maTaiKhoan, other.maTaiKhoan);
-    }
-      
-     
-      
-  
-     
-      
-      
+   
+    
+    
+    
+    
 }

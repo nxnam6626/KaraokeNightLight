@@ -4,14 +4,13 @@
  */
 package views;
 
-
+import connectDB.ConnectDB;
 import dao.Phong_dao;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -26,23 +25,28 @@ import java.util.ArrayList;
 import java.util.Locale;
 import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
-import utilities.connect.ConnectDB;
 
 public final class panel_QuanLyPhong extends javax.swing.JPanel{
     private final Phong_dao phongDao;
- 
-    
+    private Phong phongDaChon;
+    private boolean daChon=false;
    
     public panel_QuanLyPhong() {
-        
-        connectDB();
+        try {
+	     ConnectDB.getInstance().connect();
+	} catch (SQLException e) {
+            // TODO: handle exception
+	}
         phongDao= new Phong_dao();
         initComponents();
         loadALLPhong();
-        loadTrangThaiPhong();
+        loadTrangThaiPhong(); //chưa lam
         
        
     }
+
+   
+    
 
     
     
@@ -115,13 +119,14 @@ public final class panel_QuanLyPhong extends javax.swing.JPanel{
       @Override
       public void mouseClicked(MouseEvent e) {
           // Xử lý sự kiện khi phòng được nhấp chuột
-          
+            daChon= true;
+            phongDaChon= phong;
+
           // Ví dụ: hiển thị thông tin chi tiết phòng, chuyển đến trang khác, vv.
       }
-//        @Override
-//            public void actionPerformed(ActionEvent e) {
-//                
-//        }
+        public void actionPerformed(ActionEvent e) {
+            
+        }
            
         @Override
         public void mouseEntered(MouseEvent e) {
@@ -384,6 +389,7 @@ public final class panel_QuanLyPhong extends javax.swing.JPanel{
         txtTimPhong = new javax.swing.JTextField();
         cmbLoaiPhong = new javax.swing.JComboBox<>();
         cmbTrangThai = new javax.swing.JComboBox<>();
+        cldNgay = new com.toedter.calendar.JDateChooser();
         pnChuThich = new javax.swing.JPanel();
         lblPhongTrongCT = new javax.swing.JLabel();
         lblTrongImg = new javax.swing.JLabel();
@@ -497,7 +503,9 @@ public final class panel_QuanLyPhong extends javax.swing.JPanel{
                     .addComponent(lblPhongSo)
                     .addComponent(lblNgay))
                 .addGap(18, 18, 18)
-                .addComponent(txtTimPhong, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnLocPhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtTimPhong, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
+                    .addComponent(cldNgay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(29, 29, 29)
                 .addGroup(pnLocPhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblSoNguoi)
@@ -531,12 +539,14 @@ public final class panel_QuanLyPhong extends javax.swing.JPanel{
                         .addComponent(lblNgay, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(cmbTrangThai, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblTrangThai))
-                    .addGroup(pnLocPhongLayout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(lblGio, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnLocPhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(cmbGio, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnLamMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnLamMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnLocPhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(cldNgay, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnLocPhongLayout.createSequentialGroup()
+                            .addGap(1, 1, 1)
+                            .addComponent(lblGio, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(17, 17, 17))
             .addGroup(pnLocPhongLayout.createSequentialGroup()
                 .addComponent(pnNgayGioHienTai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -831,8 +841,16 @@ public final class panel_QuanLyPhong extends javax.swing.JPanel{
 
     private void btnDatPhongNgayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDatPhongNgayMouseClicked
         // TODO add your handling code here:
-        new JDialogDatPhongNgay(null, true).show();
-        
+        if(!daChon){
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn phòng muốn đặt");
+        }
+        if(daChon){
+            JDialogDatPhongNgay dialogDatPhong = new JDialogDatPhongNgay(phongDaChon);
+            dialogDatPhong.setEdit(phongDaChon);
+            dialogDatPhong.setVisible(true);
+            daChon= false;
+        }
+            
     }//GEN-LAST:event_btnDatPhongNgayMouseClicked
    
 
@@ -847,6 +865,7 @@ public final class panel_QuanLyPhong extends javax.swing.JPanel{
     private javax.swing.JButton btnThanhToan;
     private javax.swing.JButton btnTim;
     private javax.swing.JButton btnXemChiTiet;
+    private com.toedter.calendar.JDateChooser cldNgay;
     private javax.swing.JComboBox<String> cmbGio;
     private javax.swing.JComboBox<String> cmbLoaiPhong;
     private javax.swing.JComboBox<String> cmbSoNguoi;
@@ -881,13 +900,4 @@ public final class panel_QuanLyPhong extends javax.swing.JPanel{
     private javax.swing.JPanel pnPhongVIP;
     private javax.swing.JTextField txtTimPhong;
     // End of variables declaration//GEN-END:variables
-
-    public void connectDB() {
-        try {
-            ConnectDB.connect();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Không thể kết nối đến server!", "Lỗi", JOptionPane.DEFAULT_OPTION);
-            System.exit(0);
-        }
-    }
 }

@@ -57,7 +57,10 @@
                       <Component id="lblNgay" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="txtTimPhong" min="-2" pref="192" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="txtTimPhong" pref="192" max="32767" attributes="0"/>
+                      <Component id="cldNgay" max="32767" attributes="0"/>
+                  </Group>
                   <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Component id="lblSoNguoi" min="-2" max="-2" attributes="0"/>
@@ -99,13 +102,16 @@
                           <Component id="cmbTrangThai" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
                           <Component id="lblTrangThai" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
-                          <Component id="lblGio" min="-2" pref="36" max="-2" attributes="0"/>
-                      </Group>
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="cmbGio" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                           <Component id="btnLamMoi" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                          <Component id="cldNgay" alignment="1" min="-2" pref="37" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+                              <Component id="lblGio" min="-2" pref="36" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
                   <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
@@ -283,6 +289,8 @@
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
+        </Component>
+        <Component class="com.toedter.calendar.JDateChooser" name="cldNgay">
         </Component>
       </SubComponents>
     </Container>

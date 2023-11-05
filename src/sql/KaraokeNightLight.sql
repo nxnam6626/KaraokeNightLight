@@ -21,7 +21,7 @@ create table NHANVIEN
 )
 
 ---------KHÁCH HÀNG------------
-
+DROP TABLE IF EXISTS KHACHHANG
 create table KHACHHANG 
 (
 	maKH NVARCHAR(10) NOT NULL PRIMARY KEY,
@@ -29,8 +29,14 @@ create table KHACHHANG
 	gioiTinh int check (gioiTinh between 0 and 1),
 	soDienThoai NVARCHAR(10) NOT NULL,
 	loaiKhachHang int check (loaiKhachHang between 1 and 3),
-	ngaySinh DateTime NOT NULL
+	ngaySinh Date NOT NULL,
+	diemThanhVien int
 )
+ insert into KHACHHANG
+ values 
+('KH001',N'Phan Nguyễn Khôi Nguyên',0,'0934185833',1,'2003-01-15 14:30:00',0),
+('KH002',N'Phan Nguyễn Khôi',0,'0937538653',1,'2003-02-15 14:30:00',0)
+
 
 ---------TÀI KHOẢN------------
 DROP TABLE IF EXISTS TAIKHOAN
@@ -56,15 +62,15 @@ create table PHONG
 )
  insert into PHONG
  values 
-('SS001', 1, 1,320000,1),
+('SS001', 1, 1,320000,2),
 ('SS002', 1, 1,320000,1),
 ('SS003', 1, 1,320000,1),
-('SS004', 1, 1,320000,1),
+('SS004', 1, 1,320000,3),
 ('SS005', 1, 1,320000,1),
 ('SS006', 1, 1,320000,1),
-('SS007', 1, 1,320000,1),
+('SS007', 1, 1,320000,2),
 ('SS008', 1, 1,320000,1),
-('SS009', 1, 1,320000,1),
+('SS009', 1, 1,320000,2),
 ('SS010', 1, 1,320000,1),
 
 ('SM001', 2, 1,390000,1),
@@ -91,14 +97,14 @@ create table PHONG
 
 ('V001', 0 ,2 ,799000,1),
 ('V002', 0 ,2 ,799000,1),
-('V003', 0 ,2 ,799000,1),
+('V003', 0 ,2 ,799000,2),
 ('V004', 0 ,2,799000,1),
 ('V005', 0 ,2 ,799000,1),
 ('V006', 0 ,2 ,799000,1),
-('V007', 0 ,2 ,799000,1),
+('V007', 0 ,2 ,799000,3),
 ('V008', 0 , 2,799000,1),
-('V009', 0 ,2 ,799000,1),
-('V010', 0 , 2,799000,1)
+('V009', 0 ,2 ,799000,2),
+('V010', 0 , 2,799000,3)
 
 
 ---------PHIẾU ĐẶT PHÒNG------------

@@ -21,7 +21,7 @@ create table NHANVIEN
 )
 
 ---------KHÁCH HÀNG------------
-
+DROP TABLE IF EXISTS KHACHHANG
 create table KHACHHANG 
 (
 	maKH NVARCHAR(10) NOT NULL PRIMARY KEY,
@@ -29,8 +29,14 @@ create table KHACHHANG
 	gioiTinh int check (gioiTinh between 0 and 1),
 	soDienThoai NVARCHAR(10) NOT NULL,
 	loaiKhachHang int check (loaiKhachHang between 1 and 3),
-	ngaySinh DateTime NOT NULL
+	ngaySinh Date NOT NULL,
+	diemThanhVien int
 )
+ insert into KHACHHANG
+ values 
+('KH001',N'Phan Nguyễn Khôi Nguyên',0,'0934186733',1,'01/12/2003',0),
+('KH002',N'Phan Nguyễn Khôi',0,'0937538653',1,'01/02/2003',0)
+
 
 ---------TÀI KHOẢN------------
 DROP TABLE IF EXISTS TAIKHOAN

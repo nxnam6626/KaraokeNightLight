@@ -4,20 +4,155 @@
  */
 package views;
 
-public class JDialogDatPhongNgay extends javax.swing.JDialog {
+import dao.KhachHang_dao;
+import dao.Phong_dao;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import models.HoaDon;
+import models.KhachHang;
+import models.PhieuDatPhong;
+import models.Phong;
 
-    public JDialogDatPhongNgay(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+public class JDialogDatPhongNgay extends javax.swing.JDialog{
+    private Phong phongChon;
+    private final Phong_dao phongDao;
+    private final KhachHang_dao khachHangDao;
+    private PhieuDatPhong phieuDatPhong;
+    private HoaDon hoaDon;
+
+
+
+    public JDialogDatPhongNgay(Phong phong) {
+//        super(parent, modal); 
+        phongChon= phong;
         initComponents();
         this.setLocationRelativeTo(null);
+        phongDao= new Phong_dao();
+        khachHangDao= new KhachHang_dao();
     }
 
-    JDialogDatPhongNgay() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+
 
 
     @SuppressWarnings("unchecked")
+//================================================================================================================================//
+//================================================================================================================================//
+    public void khoiTao(Phong phong) {
+       phongChon = phong; 
+       phieuDatPhong = null;
+       hoaDon = null;
+       txt_maPhong.setText(phong.getMaPhong());
+       txt_loaiPhong.setText(phong.getLoaiPhong());
+       double giaPhong = phong.getGiaPhong();
+       txt_giaPhong.setText(Double.toString(giaPhong));
+       
+       int nhomPhong= phong.getNhomPhong();
+       if(nhomPhong == 1){
+           txt_nhomPhong.setText("Nhỏ");
+           txt_soNguoi.setText("Dưới 10 người");
+       }else if(nhomPhong==2){
+           txt_nhomPhong.setText("Trung");
+           txt_soNguoi.setText("10-20 người");
+       }else if(nhomPhong==3){
+           txt_nhomPhong.setText("Lớn");
+           txt_soNguoi.setText("20-30 người");
+       }else{
+           txt_nhomPhong.setText("Lớn");
+           txt_soNguoi.setText("10-20 người");
+       }
+       
+       Date date= new Date();
+       SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+       String ngayGioFormatted = dateFormat.format(date);
+       txt_thoiGianDat.setText(ngayGioFormatted);
+  
+//        Nếu trạng thái của phòng là "cho" 
+//        và cách thời gian nhận phòng ít hơn 2 giờ, bạn sẽ hiển thị một thông báo không cho phép đặt phòng
+        if(phong.getTrangThaiPhong()== 2){
+            Date now = new Date();
+//            phieuDatPhong = phieuDatPhongDao.layPhieuDatPhongMoiNhatTheoPhong(phong.getMaPhong());
+//			if (now.getDay() == phieuDatPhong.getThoiGianNhanPhong().getDay()
+//					&& now.getHours() >= phieuDatPhong.getThoiGianNhanPhong().getHours() - 2) {
+//				JOptionPane.showMessageDialog(this,
+//						"Hiện tại bạn KHÔNG được phép đặt phòng này do có khách sắp tới nhận phòng");
+//				this.setVisible(false);
+//				hoaDon = null;
+//				phieuDatPhong = null;
+//				phong = null;
+//				return;
+//			}
+        }
+	this.setVisible(true);
+    }
+//================================================================================================================================//
+//================================================================================================================================//
+    public void setEdit(Phong phong){
+       txt_maPhong.setText(phong.getMaPhong());
+       txt_loaiPhong.setText(phong.getLoaiPhong());
+       double giaPhong = phong.getGiaPhong();
+       txt_giaPhong.setText(Double.toString(giaPhong));
+       
+       int nhomPhong= phong.getNhomPhong();
+       if(nhomPhong == 1){
+           txt_nhomPhong.setText("Nhỏ");
+           txt_soNguoi.setText("Dưới 10 người");
+       }else if(nhomPhong==2){
+           txt_nhomPhong.setText("Trung");
+           txt_soNguoi.setText("10-20 người");
+       }else if(nhomPhong==3){
+           txt_nhomPhong.setText("Lớn");
+           txt_soNguoi.setText("20-30 người");
+       }else{
+           txt_nhomPhong.setText("Lớn");
+           txt_soNguoi.setText("10-20 người");
+       }
+       
+       Date date= new Date();
+       SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+       String ngayGioFormatted = dateFormat.format(date);
+       txt_thoiGianDat.setText(ngayGioFormatted);
+       
+    }
+//================================================================================================================================//
+//================================================================================================================================//   
+    public boolean kiemTraSDTKhach() {
+	String sdt = txt_soDienThoai.getText();
+	if (sdt.trim().length() == 0) {
+	     JOptionPane.showMessageDialog(this, "Yêu cầu nhập số điện thoại khách hàng");
+	     txt_soDienThoai.selectAll();
+	     txt_soDienThoai.requestFocus();
+	     return false;
+	}
+	if (!sdt.matches("(^(03)[2-9]\\d{7})|(^(07)[06-9]\\d{7})|(^(08)[1-5]\\d{7})|(^(056)\\d{7})|(^(058)\\d{7})|(^(059)\\d{7})|(^(09)[0-46-9]\\d{7})")) {
+		JOptionPane.showMessageDialog(this, "Số điện thoại không đúng định dạng");
+		txt_soDienThoai.selectAll();
+		txt_soDienThoai.requestFocus();
+		return false;
+	}
+        KhachHang kHang = khachHangDao.findKhachHangTheoSDT(sdt);
+	if (kHang == null) {
+	     int xacNhan = JOptionPane.showConfirmDialog(this,
+					"Khách hàng không có trong hệ thống, Bạn có muốn thêm khách hàng không", "Thông báo",
+					JOptionPane.YES_NO_OPTION);
+		if (xacNhan == JOptionPane.YES_OPTION) {
+//			DialogThemKhachHang dialogThemKhachHang = new DialogThemKhachHang(sdt);
+//			dialogThemKhachHang.setVisible(true);
+//			if (DialogThemKhachHang.khachHang == null) {
+//				dialogThemKhachHang.dispose();
+//				return false;
+//			}
+//			dialogThemKhachHang.dispose();
+//			khachHang = DialogThemKhachHang.khachHang;
+		}else{
+                    txt_tenKhach.requestFocus();
+                }
+	}
+        txt_tenKhach.setText(kHang.getTenKH());
+	return true;
+	}
+//================================================================================================================================//
+//================================================================================================================================//    
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -42,6 +177,7 @@ public class JDialogDatPhongNgay extends javax.swing.JDialog {
         txt_soNguoi = new javax.swing.JTextField();
         txt_soDienThoai = new javax.swing.JTextField();
         txt_giaPhong = new javax.swing.JTextField();
+        btn_Tim = new javax.swing.JButton();
         pnl_ChucNang = new javax.swing.JPanel();
         btn_DatPhong = new javax.swing.JButton();
         btn_Thoat = new javax.swing.JButton();
@@ -62,6 +198,18 @@ public class JDialogDatPhongNgay extends javax.swing.JDialog {
 
         lbl_maPhong.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lbl_maPhong.setText("Mã phòng");
+
+        txt_maPhong.setEditable(false);
+        txt_maPhong.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+
+        txt_loaiPhong.setEditable(false);
+        txt_loaiPhong.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+
+        txt_nhomPhong.setEditable(false);
+        txt_nhomPhong.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+
+        txt_thoiGianDat.setEditable(false);
+        txt_thoiGianDat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
 
         lbl_thoiGianDat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lbl_thoiGianDat.setText("Thời gian đặt");
@@ -90,8 +238,8 @@ public class JDialogDatPhongNgay extends javax.swing.JDialog {
                 .addGroup(pnl_PhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(txt_nhomPhong, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txt_loaiPhong, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txt_maPhong, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txt_thoiGianDat, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE))
+                    .addComponent(txt_thoiGianDat, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+                    .addComponent(txt_maPhong, javax.swing.GroupLayout.Alignment.LEADING))
                 .addGap(18, 18, 18))
         );
         pnl_PhongLayout.setVerticalGroup(
@@ -113,7 +261,7 @@ public class JDialogDatPhongNgay extends javax.swing.JDialog {
                 .addGroup(pnl_PhongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_thoiGianDat, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbl_thoiGianDat, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         pnl_KhachHang.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Khách hàng", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
@@ -130,6 +278,25 @@ public class JDialogDatPhongNgay extends javax.swing.JDialog {
 
         lbl_giaPhong.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lbl_giaPhong.setText("Giá phòng");
+
+        txt_tenKhach.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+
+        txt_soNguoi.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+
+        txt_soDienThoai.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+
+        txt_giaPhong.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        txt_giaPhong.setForeground(new java.awt.Color(255, 0, 0));
+
+        btn_Tim.setBackground(new java.awt.Color(0, 0, 255));
+        btn_Tim.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btn_Tim.setForeground(new java.awt.Color(255, 255, 255));
+        btn_Tim.setText("Tìm");
+        btn_Tim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_TimActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnl_KhachHangLayout = new javax.swing.GroupLayout(pnl_KhachHang);
         pnl_KhachHang.setLayout(pnl_KhachHangLayout);
@@ -148,10 +315,13 @@ public class JDialogDatPhongNgay extends javax.swing.JDialog {
                         .addComponent(lbl_tenKhach)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(pnl_KhachHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txt_soDienThoai, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
-                    .addComponent(txt_soNguoi)
+                    .addComponent(txt_soNguoi, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
                     .addComponent(txt_tenKhach)
-                    .addComponent(txt_giaPhong))
+                    .addComponent(txt_giaPhong)
+                    .addGroup(pnl_KhachHangLayout.createSequentialGroup()
+                        .addComponent(txt_soDienThoai, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn_Tim, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnl_KhachHangLayout.setVerticalGroup(
@@ -166,9 +336,11 @@ public class JDialogDatPhongNgay extends javax.swing.JDialog {
                     .addComponent(txt_soNguoi, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbl_soNguoi))
                 .addGap(18, 18, 18)
-                .addGroup(pnl_KhachHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_soDienThoai, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_soDienThoai))
+                .addGroup(pnl_KhachHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(pnl_KhachHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txt_soDienThoai, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lbl_soDienThoai))
+                    .addComponent(btn_Tim, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(pnl_KhachHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_giaPhong, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -202,12 +374,22 @@ public class JDialogDatPhongNgay extends javax.swing.JDialog {
         btn_DatPhong.setBackground(new java.awt.Color(0, 153, 51));
         btn_DatPhong.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_DatPhong.setForeground(new java.awt.Color(255, 255, 255));
-        btn_DatPhong.setText("Đặt phòng");
+        btn_DatPhong.setText("ĐẶT PHÒNG");
+        btn_DatPhong.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_DatPhongActionPerformed(evt);
+            }
+        });
 
         btn_Thoat.setBackground(new java.awt.Color(255, 0, 0));
         btn_Thoat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_Thoat.setForeground(new java.awt.Color(255, 255, 255));
-        btn_Thoat.setText("Thoát");
+        btn_Thoat.setText("THOÁT");
+        btn_Thoat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_ThoatActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnl_ChucNangLayout = new javax.swing.GroupLayout(pnl_ChucNang);
         pnl_ChucNang.setLayout(pnl_ChucNangLayout);
@@ -258,23 +440,39 @@ public class JDialogDatPhongNgay extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public static void main(String args[]) {
+    private void btn_DatPhongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_DatPhongActionPerformed
+        // TODO add your handling code here:
+        if (!kiemTraSDTKhach()) {
+	           return;
+	} 
+	int n = JOptionPane.showConfirmDialog(null, "Xác nhận đặt phòng " + phongChon.getMaPhong(),
+			"Thông báo", JOptionPane.YES_NO_OPTION);
+                        
+	if (n == JOptionPane.YES_OPTION) { 
+            phongDao.capNhatTrangThaiPhong(phongChon.getMaPhong(), 3);
+            JOptionPane.showMessageDialog(null, "Đặt phòng "+ phongChon.getMaPhong()+ " thành công !!!");
+            phongChon.setTrangThaiPhong(3);
+//            panel_QuanLyPhong pnlQLP = new panel_QuanLyPhong();
+//            pnlQLP.loadALLPhong();
+	}
+    }//GEN-LAST:event_btn_DatPhongActionPerformed
 
-        java.awt.EventQueue.invokeLater(() -> {
-            JDialogDatPhongNgay dialog = new JDialogDatPhongNgay(new javax.swing.JFrame(), true);
-            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                @Override
-                public void windowClosing(java.awt.event.WindowEvent e) {
-                    System.exit(0);
-                }
-            });
-            dialog.setVisible(true);
-        });
-    }
+    private void btn_ThoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ThoatActionPerformed
+
+        setVisible(false);
+    }//GEN-LAST:event_btn_ThoatActionPerformed
+
+    private void btn_TimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_TimActionPerformed
+
+        kiemTraSDTKhach();
+    }//GEN-LAST:event_btn_TimActionPerformed
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_DatPhong;
     private javax.swing.JButton btn_Thoat;
+    private javax.swing.JButton btn_Tim;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JLabel lblTieuDe;
     private javax.swing.JLabel lbl_giaPhong;

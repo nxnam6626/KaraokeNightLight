@@ -6,13 +6,14 @@ package models;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 public class PhieuDatPhong implements Serializable{
     private String maPhieuDatPhong;
     private Phong phongDat;
-    private Date thoiGianDangKyDatPhong;
+    private Date thoiGianDatPhong;
     private Date thoiGianNhanPhong;
-    private NhanVien nhanVienDat;
+    private NhanVien nhanVienLap;
     private KhachHang khachHangDat;
     private int tinhTrang;
 
@@ -32,12 +33,12 @@ public class PhieuDatPhong implements Serializable{
         this.phongDat = phongDat;
     }
 
-    public Date getThoiGianDangKyDatPhong() {
-        return thoiGianDangKyDatPhong;
+    public Date getThoiGianDatPhong() {
+        return thoiGianDatPhong;
     }
 
-    public void setThoiGianDangKyDatPhong(Date thoiGianDangKyDatPhong) {
-        this.thoiGianDangKyDatPhong = thoiGianDangKyDatPhong;
+    public void setThoiGianDatPhong(Date thoiGianDatPhong) {
+        this.thoiGianDatPhong = thoiGianDatPhong;
     }
 
     public Date getThoiGianNhanPhong() {
@@ -48,12 +49,12 @@ public class PhieuDatPhong implements Serializable{
         this.thoiGianNhanPhong = thoiGianNhanPhong;
     }
 
-    public NhanVien getNhanVienDat() {
-        return nhanVienDat;
+    public NhanVien getNhanVienLap() {
+        return nhanVienLap;
     }
 
-    public void setNhanVienDat(NhanVien nhanVienDat) {
-        this.nhanVienDat = nhanVienDat;
+    public void setNhanVienLap(NhanVien nhanVienLap) {
+        this.nhanVienLap = nhanVienLap;
     }
 
     public KhachHang getKhachHangDat() {
@@ -72,23 +73,46 @@ public class PhieuDatPhong implements Serializable{
         this.tinhTrang = tinhTrang;
     }
 
-    public PhieuDatPhong(String maPhieuDatPhong, Phong phongDat, Date thoiGianDangKyDatPhong, Date thoiGianNhanPhong, NhanVien nhanVienDat, KhachHang khachHangDat, int tinhTrang) {
+    public PhieuDatPhong(String maPhieuDatPhong, Phong phongDat, Date thoiGianDatPhong, Date thoiGianNhanPhong, NhanVien nhanVienLap, KhachHang khachHangDat, int tinhTrang) {
         this.maPhieuDatPhong = maPhieuDatPhong;
         this.phongDat = phongDat;
-        this.thoiGianDangKyDatPhong = thoiGianDangKyDatPhong;
+        this.thoiGianDatPhong = thoiGianDatPhong;
         this.thoiGianNhanPhong = thoiGianNhanPhong;
-        this.nhanVienDat = nhanVienDat;
+        this.nhanVienLap = nhanVienLap;
         this.khachHangDat = khachHangDat;
         this.tinhTrang = tinhTrang;
     }
 
-    public PhieuDatPhong() {
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.maPhieuDatPhong);
+        return hash;
     }
 
     @Override
-    public String toString() {
-        return "PhieuDatPhong{" + "maPhieuDatPhong=" + maPhieuDatPhong + ", phongDat=" + phongDat + ", thoiGianDangKyDatPhong=" + thoiGianDangKyDatPhong + ", thoiGianNhanPhong=" + thoiGianNhanPhong + ", nhanVienDat=" + nhanVienDat + ", khachHangDat=" + khachHangDat + ", tinhTrang=" + tinhTrang + '}';
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final PhieuDatPhong other = (PhieuDatPhong) obj;
+        return Objects.equals(this.maPhieuDatPhong, other.maPhieuDatPhong);
     }
+
+    
+    
+    
+    @Override
+    public String toString() {
+        return "PhieuDatPhong{" + "maPhieuDatPhong=" + maPhieuDatPhong + ", phongDat=" + phongDat + ", thoiGianDatPhong=" + thoiGianDatPhong + ", thoiGianNhanPhong=" + thoiGianNhanPhong + ", nhanVienLap=" + nhanVienLap + ", khachHangDat=" + khachHangDat + ", tinhTrang=" + tinhTrang + '}';
+    }
+    
     
     
 }
